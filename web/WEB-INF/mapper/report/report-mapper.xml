@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectTotalCount">
+		SELECT
+		       COUNT(COUNT(A.REPORT_BD_NO))
+		  FROM REPORT_LIST A
+		 GROUP BY A.REPORT_BD_NO
+	</entry>
+	<entry key="selectCountList">
+		SELECT
+		       A.REPORT_BD_NO
+		     , B.HP_RV_TITLE
+		     , COUNT(A.REPORT_BD_NO)
+		  FROM REPORT_LIST A
+		  JOIN HOSPITAL_RV B ON(A.REPORT_BD_NO = B.HP_RV_NO)
+		 GROUP BY A.REPORT_BD_NO, B.HP_RV_TITLE
+	</entry>
+	<entry key="insertReport">
+	    INSERT
+	      INTO REPORT_LIST A
+	    (
+	      REPORT_NO
+	    , REPORT_BD_NO
+	    , REPORT_BD_CATEGORY_NO
+	    , REPORTER_MEM_NO
+	    , REPORT_REASON_NO
+	    , REPORT_BD_WRITER_NO
+	    )
+	    VALUES
+	    (
+	      SEQ_HP_REPORT_NO.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+	<entry key="insertReportWithContent">
+	    INSERT
+	      INTO REPORT_LIST A
+	    (
+	      REPORT_NO
+	    , REPORT_BD_NO
+	    , REPORT_BD_CATEGORY_NO
+	    , REPORTER_MEM_NO
+	    , REPORT_REASON_NO
+	    , REPORT_BD_WRITER_NO
+	    , REPORT_CONTENT
+	    )
+	    VALUES
+	    (
+	      SEQ_HP_REPORT_NO.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+	<entry key="selectList">
+	    SELECT
+		       A.REPORT_NO
+		     , A.REPORT_BD_NO
+		     , A.REPORT_BD_CATEGORY_NO
+		     , A.REPORTER_MEM_NO
+		     , A.REPORT_REASON_NO
+		     , A.REPORT_BD_WRITER_NO
+		     , B.HP_RV_TITLE
+		     , C.MEM_NAME
+		     , D.MEM_NAME
+		     , E.REPORT_REASON
+		     , A.REPORT_CONTENT
+		  FROM REPORT_LIST A
+		  JOIN HOSPITAL_RV B ON(A.REPORT_BD_NO = B.HP_RV_NO)
+		  JOIN MEM_INFO C ON(A.REPORTER_MEM_NO = C.MEM_NO)
+		  JOIN MEM_INFO D ON(A.REPORT_BD_WRITER_NO = D.MEM_NO)
+		  JOIN REPORT_REASON E ON(A.REPORT_REASON_NO = E.REPORT_REASON_NO)
+		 WHERE REPORT_BD_NO = ?
+	</entry>
+</properties>

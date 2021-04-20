@@ -197,4 +197,41 @@ public class MemberDAO {
 		
 		return result;
 	}
+
+	public int checkIdOverlap(Connection con, String id) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("checkIdOverlap");
+		
+		int result = 1;
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				result = 0;
+				
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return result;
+		
+	}
 }

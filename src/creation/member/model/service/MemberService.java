@@ -106,5 +106,15 @@ private final MemberDAO memberDAO;
 		return result;	
 	}
 
+	public int checkIdOverlap(String id) {
+		
+		Connection con = getConnection();
+		
+		int result = memberDAO.checkIdOverlap(con, id);
+		
+		return result;
+		
+	}
+
 
 }

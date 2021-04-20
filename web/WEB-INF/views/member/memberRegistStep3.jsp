@@ -25,19 +25,19 @@
                     <div class="col-md-8 col-md-offset-2" >
                         <div class="form-container">
                             <form action="${ pageContext.servletContext.contextPath }/member/regist" method="post" class="vanilla vanilla-form" novalidate=""
-                                data-vf-id="76ae1c44-b904-d78a-f1c8-d8d80edead50">
+                                data-vf-id="76ae1c44-b904-d78a-f1c8-d8d80edead50" id="submitForm">
                                 <div class="row">
                                     <div class="col-sm-12 pr-10">
                                         <div class="form-group col-sm-3">
                                             <label for="#">아이디</label>
                                         </div>
                                         <div class="form-group col-sm-7">
-                                            <input type="id" class="form-control" name="id" placeholder="이름"
-                                                required="required">
+                                            <input type="id" class="form-control" name="id" id="id" placeholder="이름"
+                                                required="required" onchange="idChange()">
                                         </div>
                                         <div class="col-md-2">
-                                            <a href="#" class="gp-btn btn-primary small"
-                                                style="padding: 10px 15px;">중복확인</a>
+                                            <button type="button" onclick="checkMemIdOverlap()" class="gp-btn btn-primary small"
+                                                style="padding: 10px 15px;">중복확인</button>
                                         </div>
                                     </div>
                                     <!--/column -->
@@ -46,7 +46,7 @@
                                             <label for="#">비밀번호</label>
                                         </div>
                                         <div class="form-group col-sm-7">
-                                            <input type="password" class="form-control" name="pwd" placeholder="비밀번호">
+                                            <input type="password" class="form-control" name="pwd" placeholder="비밀번호" id="password">
                                         </div>
                                         <!--/.form-group -->
                                     </div>
@@ -55,7 +55,7 @@
                                             <label for="#">비밀번호확인</label>
                                         </div>
                                         <div class="form-group col-sm-7">
-                                            <input type="password" class="form-control" placeholder="비밀번호확인">
+                                            <input type="password" class="form-control" placeholder="비밀번호확인" id="checkPassword">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 pr-10">
@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="form-group col-sm-7">
                                             <input type="text" class="form-control" name="name" placeholder="이름"
-                                                required="required">
+                                                required="required" id="name">
                                         </div>
 
                                     </div>
@@ -78,7 +78,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                             	<select id="monthInput" name="birthdayMonth" class="form-control">
-                                                    <option selected>월</option>
+                                                    <option value="" selected>월</option>
                                                     <option value="01">1</option>
                                                     <option value="02">2</option>
                                                     <option value="03">3</option>
@@ -103,7 +103,7 @@
                                             <label for="#">이메일</label>
                                         </div>
                                         <div class="form-group col-sm-3" style="padding-right: 0;">
-                                            <input type="text" class="form-control" name="email1" placeholder="이메일">
+                                            <input type="text" class="form-control" name="email1" id="email1" placeholder="이메일">
                                         </div>
                                         <div class="form-group col-sm-1" style="padding-right: 0;">
                                             <div class="input-group-prepend">
@@ -112,7 +112,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <select id="inputState" name="email2" class="form-control">
+                                            <select id="email2" name="email2" class="form-control">
                                                 <option selected value="naver.com">naver.com</option>
                                                 <option>gmail.com</option>
                                                 <option>gmail.com</option>
@@ -128,16 +128,16 @@
                                                 <label for="#">전화번호</label>
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <select id="inputState" name="tel1" class="form-control">
+                                                <select id="tel1" name="tel1" class="form-control">
                                                     <option selected value="010">010</option>
                                                     <option value="011">011</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
-                                                <input type="text" class="form-control" name="tel2" id="inputCity">
+                                                <input type="text" class="form-control" name="tel2" id="tel2">
                                             </div>
                                             <div class="form-group col-md-2">
-                                                <input type="text" class="form-control" name="tel3" id="inputZip">
+                                                <input type="text" class="form-control" name="tel3" id="tel3">
                                             </div>
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center mt">
-				                    <button type="submit" class="gp-btn btn-primary larg" style="border:0">회원가입</button>
+				                    <button type="button" class="gp-btn btn-primary larg" style="border:0" id="submitButton" name="submitButton">회원가입</button>
 				                </div>
                             </form>
                         </div>
@@ -193,7 +193,9 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		const $searchZipCode = document.getElementById("searchZipCode");
-		const $goMain = document.getElementById("goMain");
+		/* const $goMain = document.getElementById("goMain"); */
+		const $submitButton = document.getElementById("submitButton");
+		var idCheck = false;
 		
 		$searchZipCode.onclick = function(){
 			
@@ -206,9 +208,118 @@
 			}).open();
 		}
 		
-		$goMain.onclick=function(){
+		/* $goMain.onclick = function(){
 			location.href = "${ pageContext.servletContext.contextPath}";
+		} */
+		
+		$submitButton.onclick = function(){
+			
+			if(!idCheck){
+				
+				alert("아이디 중복체크를 우선 진행해 주세요.");
+				document.getElementById("id").focus();
+				
+			} else if(document.getElementById("password").value == ""){
+				
+				alert("비밀번호를 입력해주세요.");
+				document.getElementById("password").focus();
+			
+			} else if(document.getElementById("password").value != document.getElementById("checkPassword").value){
+				
+				alert("비밀번호 재확인이 일치하지 않습니다.");
+				document.getElementById("password").focus();
+			
+			} else if(document.getElementById("name").value == ""){
+				
+				alert("이름을 입력해주세요.");
+				document.getElementById("name").focus();
+			
+			} else if(document.getElementById("yearInput").value == "" || document.getElementById("monthInput").value == "" || document.getElementById("dayInput").value == ""){
+				
+				alert("생년월일을 입력해주세요.");
+				document.getElementById("yearInput").focus();
+			
+			} else if(document.getElementById("email1").value == ""){
+				
+				alert("이메일을 입력해주세요.");
+				document.getElementById("email1").focus();
+			
+			} else if(document.getElementById("tel2").value == "" || document.getElementById("tel3").value == ""){
+				
+				alert("전화번호를 입력해주세요.");
+				document.getElementById("tel2").focus();
+			
+			} else if(document.getElementById("address1").value == "" || document.getElementById("address2").value == ""){
+				
+				alert("주소를 입력해주세요.");
+				document.getElementById("address1").focus();
+				
+			} else {
+				
+				$("#submitForm").submit();
+				
+			}
+			
+		}
+		
+		function idChange(){
+			
+			idCheck = false;
+			
 		}
 	</script>
+	
+	<script>
+		function checkMemIdOverlap(){
+			
+			var $idValue = document.getElementById("id");
+			console.log($idValue.value);
+			if($idValue.value == ""){
+				
+				alert("아이디를 입력해주세요.");
+				
+			} else {
+				
+				checkFunc($idValue.value);
+				
+			}
+
+			
+		}
+		
+		function checkFunc(id) {
+			
+			$.ajax({
+			    url:"${ pageContext.servletContext.contextPath }/check/id/overlap",
+			    data:{id:id},
+			    type:'POST',
+			    success:function(data){
+			    	
+			    	console.log(data);
+			    	if(data == 1){
+			    		
+			    		// 중복없음
+			    		alert("사용 가능한 아이디입니다.");
+			    		idCheck = true;
+			    		
+			    	} else {
+			    		
+			    		// 중복됨
+			    		alert("중복된 아이디입니다.");
+			    		
+			    	}
+			    	
+			    },
+			    error:function(request, status, error){
+				       
+			    	alert("code:" + request.status + "\n" + "message:" + request.responseTest + "\n" + "error:" + error);
+			    	
+			    }
+			
+			});
+		}
+	</script>
+	
+}
 </body>
 </html>

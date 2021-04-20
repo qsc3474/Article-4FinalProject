@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,64 +31,67 @@
 }
 
 .modal-button button {
-    outline: none;
- 	border: 0;
+	outline: none;
+	border: 0;
 }
 
 .close-button {
-    transition: all 0.5s ease;
-    position: absolute;
-    background-color: #000;
-    padding: 1.5px 7px;
-    left: 0;
-    margin-left: -10px;
-    margin-top: -9px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    color: white;
-    z-index: 1;
+	transition: all 0.5s ease;
+	position: absolute;
+	background-color: #000;
+	padding: 1.5px 7px;
+	left: 0;
+	margin-left: -10px;
+	margin-top: -9px;
+	border-radius: 50%;
+	border: 2px solid #fff;
+	color: white;
+	z-index: 1;
 }
-
 /* modal */
 #pop-up {
-    width: 500px;
+	width: 500px;
 }
 
 .pop {
-    display: none;
-    position: fixed;
-    top: 20%;
-    left: 40%;
-    width: 400px;
-    height: 300px;
-    background: #ffffff;
-    background-color: whitesmoke;
-    text-align: center;
+	display: none;
+	position: fixed;
+	top: 20%;
+	left: 40%;
+	width: 400px;
+	height: 300px;
+	background: #ffffff;
+	background-color: whitesmoke;
+	text-align: center;
 }
 
 .pop h3 {
-    text-align: center;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    color: #fff;
-    background-color: #FDC647;
+	text-align: center;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color: #fff;
+	background-color: #FDC647;
 }
 
 .pop p {
-    padding: 20px 65px 20px 65px;
-    color: dimgray;
-    font-size: 16px;
-    }
-tbody {
-    border-top: 2px solid #36b2b0 !important;
+	padding: 20px 65px 20px 65px;
+	color: dimgray;
+	font-size: 16px;
 }
-    
+
+tbody {
+	border-top: 2px solid #36b2b0 !important;
+}
 </style>
 <!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script	src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script
+	src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
 </head>
 
 <body id="home-version-1"
@@ -105,9 +108,6 @@ tbody {
 				<c:when test="${ requestScope.board.categoryNo eq 'HP_NTC' }">
 					<h2>공지사항detail</h2>
 				</c:when>
-				<c:when test="${ requestScope.board.categoryNo eq 'HP_INFO' }">
-					<h2>정보게시판detail</h2>
-				</c:when>
 				<c:when test="${ requestScope.board.categoryNo eq 'HP_RV' }">
 					<h2>후기게시판detail</h2>
 				</c:when>
@@ -118,76 +118,68 @@ tbody {
 		</div>
 	</section>
 	<!-- 섹션타이틀 -->
-	
-	
+
+
 
 	<!-- 이용 후기 -->
 	<section class="blog-single bg-white">
 		<div class="container">
 			<div class="row">
 				<div class="row coments-row">
-                    게시글 상세조회<table class="table table-bordered">
-                        <colgroup></colgroup>
-                        <tbody>
-                          <tr>
-                            <th scope="row">제목</th>
-                            <td colspan="5">${ requestScope.board.title }
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">등록자</th>
-                            <td>${ requestScope.board.writer.name }</td>
-                            <td>등록일</td>
-                            <td>${ requestScope.board.drawupDate }</td>
-                            <td>조회수</td>
-                            <td>${ requestScope.board.watched }</td>
-                          </tr>
-                          <tr>
-                          <th scope="row">파일</th>
-                          <td colspan="5">
-                          	<input type="file" id="customFile" style="border:0;">
-                          </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">내용</th>
-                            <td colspan="5">
-                            <p id="exampleFormControlTextarea1" style="height: 200px; background: #fff; border: 1px solid #ddd; padding: 10px;">${ requestScope.board.content }</p>
-                            <c:if test="${ sessionScope.loginMember.kind eq 'M' }">
-			                      <div class="button-group text-center" style="margin-top:10px">
-			                      	<input type='hidden' value="${ requestScope.board.no }" >
-			                        <button id='updateBoard' type="button" class="gp-btn small btn-primary">수정</button>
-			                        <button id='deleteBoard' type="button" class="gp-btn small btn-dark center">삭제</button>
-			                      </div>
-			                 </c:if>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                </div>
-                
-                 
-				<%-- <h2 class="hide">후기 디테일</h2>
-				<p style="background:#ccc;">
-					${ requestScope.board.title }
-				</p>
-				<p>
-					<span><i class="glyphicon glyphicon-user"><strong>&nbsp;${ requestScope.board.writer.name }</strong></i></span>
-					<span><i class="glyphicon glyphicon glyphicon-time"></i><strong>&nbsp;날짜</strong>
-						: ${ requestScope.board.drawupDate }</span> <span><strong>조회</strong> : ${ requestScope.board.watched }</span>
-				</p>
-				<div class="col-md-12" style="margin-bottom: 5px;">
-					<c:if test="${ requestScope.board.fileList[0].path ne null}">
-						<div><a href="${pageContext.request.contextPath }\resources\\upload\\file\\7786ee78719942edbebb7ca6a80d26ec.txt" download="${ requestScope.board.fileList[0].originName }">첨부파일</a></div>
-					</c:if>
-					${ requestScope.board.content }
+					게시글 상세조회
+					<table class="table table-bordered">
+						<colgroup></colgroup>
+						<tbody>
+							<tr>
+								<th scope="row">제목</th>
+								<td colspan="5">${ requestScope.board.title }</td>
+							</tr>
+							<tr>
+								<th scope="row">등록자</th>
+								<td>${ requestScope.board.writer.name }</td>
+								<td>등록일</td>
+								<td>${ requestScope.board.drawupDate }</td>
+								<td>조회수</td>
+								<td>${ requestScope.board.watched }</td>
+							</tr>
+							<tr>
+								<th scope="row">파일</th>
+								<td colspan="5"><input type="file" id="customFile"
+									style="border: 0;"></td>
+							</tr>
+							<tr>
+								<th scope="row">내용</th>
+								<td colspan="5"><c:if
+										test="${ requestScope.board.categoryNo eq 'HP_RV' }">
+										<c:if test="${ !empty requestScope.board.fileList[0] }">
+											<c:forEach items="${ requestScope.board.fileList }"
+												var="pictures">
+												<div style="float: left;">
+													<img
+														src="${pageContext.servletContext.contextPath}${ pictures.thumbnailPath }">
+												</div>
+											</c:forEach>
+										</c:if>
+									</c:if>
+									<p id="exampleFormControlTextarea1"
+										style="height: 200px; background: #fff; border: 1px solid #ddd; padding: 10px;">${ requestScope.board.content }</p>
+									<c:if test="${ sessionScope.loginMember.kind eq 'M' }">
+										<div class="button-group text-center" style="margin-top: 10px">
+											<input type='hidden' value="${ requestScope.board.no }">
+											<button id='updateBoard' type="button" class="gp-btn small btn-primary">수정</button>
+											<button id='deleteBoard' type="button" class="gp-btn small btn-dark center">삭제</button>
+											<div style="float: left;">
+												<c:if test="${ requestScope.board.categoryNo eq 'HP_RV'}">
+													<button id='reportBoard' type="button" class="gp-btn small btn-dark center"	style="background: red">신고</button>
+												</c:if>
+											</div>
+										</div>
+									</c:if>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<c:if test="${ sessionScope.loginMember.kind eq 'M' }">
-					<div>
-						<input type='hidden' value="${ requestScope.board.no }" >
-						<button type='button' id='updateBoard'>수정하기</button>
-						<button type='button' id='deleteBoard'>삭제하기</button>
-					</div>
-				</c:if> --%>
 			</div>
 			<!-- /.row -->
 
@@ -197,20 +189,20 @@ tbody {
 						<p class="related-post-title">댓글달기</p>
 						<div class="row coments-row">
 							<table class="table table-bordered">
-							<colgroup>
-                                <col style="width: 13%;">
-                                <col>
-                                <col>
-                            </colgroup>
+								<colgroup>
+									<col style="width: 13%;">
+									<col>
+									<col>
+								</colgroup>
 								<tbody>
 									<tr>
 										<th rowspan="2">댓글내용</th>
 										<td><textarea class="form-control" rows="2"
 												name="content" id="content" placeholder="내용을 입력해 주세요"></textarea>
-												<div class="text-center" style="margin-top: 10px;">
-												<button type="button" id="commentSubmitButton" class="gp-btn small btn-primary">등록하기</button>
-											</div>
-										</td>
+											<div class="text-center" style="margin-top: 10px;">
+												<button type="button" id="commentSubmitButton"
+													class="gp-btn small btn-primary">등록하기</button>
+											</div></td>
 									</tr>
 								</tbody>
 							</table>
@@ -223,41 +215,74 @@ tbody {
 		</div>
 		<!-- /.container -->
 	</section>
-	<!-- 팝업창 -->
+	<!-- 대댓글 팝업창 -->
 	<div id="pop-up">
-        <div class="pop">
-            <div class="pop-up-box small-6 large-centered">
-                <a href="#" class="close-button">&#10006;</a>
-                <h3 style="margin-bottom:0">댓글내용</h3>
-                <table class="table table-bordered" style="background:#fff">
+		<div class="pop" id="reply-pop-up">
+			<div class="pop-up-box small-6 large-centered">
+				<a href="#" class="reply-close-button close-button">&#10006;</a>
+				<h3 style="margin-bottom: 0">댓글내용</h3>
+				<table class="table table-bordered" style="background: #fff">
 					<tbody>
 						<tr>
-							<td><textarea class="form-control" rows="5"
-									name="content" id="replyContent" placeholder="내용을 입력해 주세요"></textarea>
-							</td>
+							<td><textarea class="form-control" rows="5" name="content"
+									id="replyContent" placeholder="내용을 입력해 주세요"></textarea></td>
 						</tr>
 						<tr>
-						<td style="width: 30%;">
+							<td style="width: 30%;">
 								<div class="text-center" style="margin-top: 10px;">
-									<button type="button" id="replySubmitButton" class="gp-btn btn-dark">댓글등록</button>
+									<button type="button" id="replySubmitButton"
+										class="gp-btn btn-dark">댓글등록</button>
 								</div>
-						</td>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-            </div>
-        </div>
-    </div>
-	<!-- 팝업창 -->
+			</div>
+		</div>
+	</div>
+	<!-- 신고 팝업창 -->
+	<div id="pop-up">
+		<div class="pop" id="report-pop-up">
+			<div class="pop-up-box small-6 large-centered">
+				<a href="#" class="report-close-button close-button">&#10006;</a>
+				<div class="mb-12">
+					<form
+						action="${ pageContext.servletContext.contextPath }/hp/board/report"
+						method="POST" id="reportForm" name="reportForm">
+						<label for="title">신고사유</label> <select
+							class="custom-select mr-sm-2" name="reportCategory"
+							id="reportCategory" onchange="reportCategoryChanged(this.value)">
+							<option value="def" selected>--</option>
+							<option value="a1">욕설 및 부적절한 언어 사용</option>
+							<option value="i2">광고성 게시글 작성</option>
+							<option value="r3">음란물 업로드</option>
+							<option value="s4">회원들간의 분쟁 조장</option>
+							<option value="m5">기타</option>
+						</select> <input type="hidden" value="${ requestScope.board.no }"
+							id="reportBoardNo" name="reportBoardNo"> <input
+							type="hidden" value="${ requestScope.board.categoryNo }"
+							id="reportBoardCategory" name="reportBoardCategory"> <input
+							type="hidden" value="${ sessionScope.loginMember.no }"
+							id="reporterMemberNo" name="reporterMemberNo"> <input
+							type="hidden" value="${ requestScope.board.memberNo }"
+							id="reportWriterNo" name="reportWriterNo">
+						<textarea class="form-control" rows="3" name="reportContent"
+							id="reportContent" style="display: none;"
+							placeholder="신고 사유를 입력해 주세요"></textarea>
+						<button type="button" id="reportSubmitButton"
+							class="gp-btn btn-primary">신고접수</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 
-<script>
-
+	<script>
 var insertCount = 0;
 var currentLoginMemberNo = "${sessionScope.loginMember.no}";
-
 $(function(){  //페이지가 로드되면 댓글 데이터를 가져온다.
 	deleteAndUpdateButtonAction();
 	getCommentList(${ requestScope.board.no },"${ requestScope.board.categoryNo }");
@@ -268,7 +293,6 @@ $(function(){  //페이지가 로드되면 댓글 데이터를 가져온다.
 		
 	}
 });
-
 function deleteAndUpdateButtonAction(){
 	
 	var no = 0;
@@ -279,7 +303,6 @@ function deleteAndUpdateButtonAction(){
 	    no = getNo.value;
 	    location.href = "${pageContext.servletContext.contextPath}/hp/board/update?no=" + no + "&categoryNo=${ requestScope.board.categoryNo }";
     });
-
     $("#deleteBoard").click(function () {
     	var $parent = this.parentNode;
 	    var getNo = $parent.children[0];
@@ -288,7 +311,6 @@ function deleteAndUpdateButtonAction(){
     });
 	
 }
-
 if(document.getElementById("commentSubmitButton")){
 	const $commentSubmitButton = document.getElementById("commentSubmitButton");
 	$commentSubmitButton.onclick = function(){
@@ -296,7 +318,23 @@ if(document.getElementById("commentSubmitButton")){
 		insertComment(content.value,${ requestScope.board.no },"${ requestScope.board.categoryNo }");
 	}
 }
-
+function reportCategoryChanged(reportReason){
+	
+	console.log(reportReason);
+	
+	if(reportReason == 'm5'){
+		
+		var $reportContentText = document.getElementById("reportContent");
+		$reportContentText.style.display = "block";
+		
+	} else {
+		
+		var $reportContentText = document.getElementById("reportContent");
+		$reportContentText.style.display = "none";
+		
+	}
+	
+}
 function replyOfReply(clickParentCommentNo){
 	
 		var replyContent = document.getElementById("replyContent");
@@ -307,7 +345,6 @@ function replyOfReply(clickParentCommentNo){
 		insertReplyOfReply(clickParentCommentNo, replyContent.value, ${ requestScope.board.no }, "${ requestScope.board.categoryNo }");
 		
 }
-
 function getCommentList(currentBoardNo, currentBoardCategoryNo){
 	
 	$.ajax({
@@ -374,7 +411,6 @@ function getCommentList(currentBoardNo, currentBoardCategoryNo){
 		          if(data[key].parentCmtNo != 0 && $("#commentNo" + data[key].parentCmtNo).length != 0 && $("#commentNo" + data[key].no).length != 1){
 		        	  
 		        	  var $parentComment = $("#commentNo" + data[key].parentCmtNo);
-
 		        	  var $ul = $("<ul class='children' id='commentNo" + data[key].no + "'>");
 		        	  var $li = $("<li>").addClass("comment byuser comment-author-melissa-fox odd alt depth-2");
 			          var $divClearfix = $("<div>").addClass("clearfix");
@@ -415,7 +451,6 @@ function getCommentList(currentBoardNo, currentBoardCategoryNo){
 	       $(".button").off('click');
 	       $("#replySubmitButton").off('click');
 	       $(".close-button").off('click');
-
 	       replyCommentButtonAction();
 	       
 	    },
@@ -428,7 +463,6 @@ function getCommentList(currentBoardNo, currentBoardCategoryNo){
 	});
 	
 }
-
 function insertComment(content, currentBoardNo, currentBoardCategoryNo){
 	
 	$.ajax({
@@ -460,7 +494,6 @@ function insertComment(content, currentBoardNo, currentBoardCategoryNo){
 	});
 	
 }
-
 function insertReplyOfReply(parentCommentNo, content, currentBoardNo, currentBoardCategoryNo){
 	
 	$.ajax({
@@ -492,31 +525,52 @@ function insertReplyOfReply(parentCommentNo, content, currentBoardNo, currentBoa
 }
 </script>
 
-<!-- modal -->
-<script id="rendered-js">
+	<!-- modal -->
+	<script id="rendered-js">
 function replyCommentButtonAction() {
-
 	var no = 0;
 	
 	$(".button").click(function() {
 		    var $parent = this.parentNode;
 		    var getNo = $parent.parentNode.children[0];
 		    no = getNo.innerText;
-	        $(".pop").fadeIn(300);
+	        $("#reply-pop-up").fadeIn(300);
     });
-
     $("#replySubmitButton").click(function () {
-        $(".pop").fadeOut(300);
+        $("#reply-pop-up").fadeOut(300);
         replyOfReply(no);
         document.getElementById("replyContent").value='';
     });
     
-    $(".close-button").click(function () {
-        $(".pop").fadeOut(300);
+    $(".reply-close-button").click(function () {
+        $("#reply-pop-up").fadeOut(300);
         document.getElementById("replyContent").value='';
     });
 }
 //# sourceURL=pen.js
+$(function(){
+	
+	$("#reportBoard").click(function() {
+		
+        $("#report-pop-up").fadeIn(300);
+        
+    });
+    $("#reportSubmitButton").click(function () {
+    	
+        $("#report-pop-up").fadeOut(300);
+        $("#reportForm").submit();
+        
+        
+    });
+    
+    $(".report-close-button").click(function () {
+    	
+        $("#report-pop-up").fadeOut(300);
+        document.getElementById("reportContent").value='';
+        
+    });
+		
+});
 </script>
 
 </body>
