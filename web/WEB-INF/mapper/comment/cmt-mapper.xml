@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectList">
+		SELECT
+		       A.HP_CMT_NO
+		     , A.HP_CMT_CONTENT
+		     , A.HP_CMT_MEM_NO
+		     , A.MEM_NAME
+		     , A.HP_REF_BOARD_NO
+		     , A.HP_PARENT_CMT_NO
+		     , A.HP_WRITE_TIME
+		  FROM (SELECT
+		               B.HP_CMT_NO
+		             , B.HP_CMT_CONTENT
+		             , B.HP_CMT_MEM_NO
+		             , C.MEM_NAME
+		             , B.HP_REF_BOARD_NO
+		             , B.HP_PARENT_CMT_NO
+		             , B.HP_WRITE_TIME
+		          FROM HOSPITAL_CMT B
+		          JOIN MEM_INFO C ON(B.HP_CMT_MEM_NO = C.MEM_NO)
+		         ORDER BY B.HP_CMT_NO DESC
+		       ) A
+		 WHERE A.HP_REF_BOARD_NO = ?
+	</entry>
+	<entry key="insertComment">
+	    INSERT
+	      INTO HOSPITAL_CMT
+	    (
+	      HP_CMT_NO
+        , HP_CMT_CONTENT
+        , HP_CMT_MEM_NO
+        , HP_REF_BOARD_NO
+	    )
+	    VALUES
+	    (
+	      SEQ_HT_CMT_CODE.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+	<entry key="insertReply">
+	    INSERT
+	      INTO HOSPITAL_CMT
+	    (
+	      HP_CMT_NO
+        , HP_CMT_CONTENT
+        , HP_CMT_MEM_NO
+        , HP_REF_BOARD_NO
+        , HP_PARENT_CMT_NO
+	    )
+	    VALUES
+	    (
+	      SEQ_HT_CMT_CODE.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+	<entry key="selectOneComment">
+	    SELECT
+               A.HP_CMT_NO
+             , A.HP_CMT_CONTENT
+             , A.HP_CMT_MEM_NO
+             , B.MEM_NAME
+             , A.HP_REF_BOARD_NO
+             , A.HP_PARENT_CMT_NO
+             , A.HP_WRITE_TIME
+          FROM HOSPITAL_CMT A
+          JOIN MEM_INFO B ON(A.HP_CMT_MEM_NO = B.MEM_NO)
+         WHERE A.HP_CMT_NO = ?         
+	</entry>
+	<entry key="selectCurrSeqNo">
+		SELECT 
+		       SEQ_HT_CMT_CODE.CURRVAL
+		  FROM DUAL
+	</entry>
+	<entry key="incrementCommentCount">
+	    UPDATE HOSPITAL_BD A
+	       SET A.HP_BD_CMT_COUNT = (SELECT
+	       								   B.HP_BD_CMT_COUNT + 1
+	       							  FROM HOSPITAL_BD B
+	       							 WHERE HP_BD_NO = ?
+	       							   AND HP_BD_CATEGORY_NO = ?
+	       						   )
+	     WHERE HP_BD_NO = ?
+	       AND HP_BD_CATEGORY_NO = ?
+	</entry>
+	<entry key="incrementQNACommentCount">
+	    UPDATE HOSPITAL_QNA A
+	       SET A.HP_QNA_CMT_COUNT = (SELECT
+	       								   B.HP_QNA_CMT_COUNT + 1
+	       							  FROM HOSPITAL_QNA B
+	       							 WHERE HP_QNA_NO = ?
+	       							   AND HP_QNA_CATEGORY_NO = ?
+	       						    )
+	       	 , A.HP_QNA_ANSWER = 'Y'
+	     WHERE HP_QNA_NO = ?
+	       AND HP_QNA_CATEGORY_NO = ?
+	</entry>
+	<entry key="incrementRVCommentCount">
+	    UPDATE HOSPITAL_RV A
+	       SET A.HP_RV_CMT_COUNT = (SELECT
+	       								   B.HP_RV_CMT_COUNT + 1
+	       							  FROM HOSPITAL_RV B
+	       							 WHERE HP_RV_NO = ?
+	       							   AND HP_RV_CATEGORY_NO = ?
+	       						   )
+	     WHERE HP_RV_NO = ?
+	       AND HP_RV_CATEGORY_NO = ?
+	</entry>
+</properties>

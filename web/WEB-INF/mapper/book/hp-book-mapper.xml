@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="insertBook">
+		INSERT
+		  INTO HOSPITAL_BOOK
+		(
+		  HP_BK_NO
+		, HP_BK_TIME
+		, HP_MEM_NO
+		, HP_PET_NAME
+		, HP_PET_KIND
+		, HP_PET_GENDER
+		, HP_PET_AGE
+		, HP_PET_NEUT
+		, HP_BK_MESSAGE
+		
+		)
+		VALUES
+		(
+		  SEQ_HP_BK_NO.NEXTVAL
+		, TO_DATE(?,'YYYY/MM/DD HH24:MI:SS')
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+	
+		)
+	</entry>
+	<entry key="bookList">
+	SELECT  
+      A.HP_BK_NO
+    , A.HP_BK_TIME
+    , A.HP_BK_STATUS
+    , A.HP_PET_NAME
+    , A.HP_PET_KIND
+    , A.HP_PET_GENDER
+    , A.HP_PET_AGE
+    , A.HP_PET_NEUT
+    , A.HP_BK_MESSAGE
+FROM HOSPITAL_BOOK A
+WHERE HP_MEM_NO =?
+AND HP_BK_STATUS='진행중'
+	</entry>
+<entry key="bookDetail">	
+	SELECT  
+      A.HP_BK_NO
+    , A.HP_BK_TIME
+    , A.HP_BK_STATUS
+    , A.HP_PET_NAME
+    , A.HP_PET_KIND
+    , A.HP_PET_GENDER
+    , A.HP_PET_AGE
+    , A.HP_PET_NEUT
+    , A.HP_BK_MESSAGE
+    , A.HP_MEM_NO
+FROM HOSPITAL_BOOK A
+WHERE HP_BK_NO =?
+</entry>
+
+<entry key="bookCancel">
+UPDATE
+      HOSPITAL_BOOK A
+   SET A.HP_BK_STATUS = '취소'
+ WHERE HP_BK_STATUS ='진행중'
+   AND HP_BK_NO =?
+  </entry>
+</properties>
+	

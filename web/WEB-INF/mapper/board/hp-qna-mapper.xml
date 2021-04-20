@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectTotalCount">
+			SELECT
+				   COUNT(*)
+			  FROM HOSPITAL_QNA A
+			 WHERE A.HP_QNA_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="selectList">
+	    SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , A.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_QNA_NO
+  		  			 , B.HP_QNA_CATEGORY_NO
+  		  			 , B.HP_QNA_TITLE
+  		  			 , B.HP_QNA_CONTENT
+  		  			 , B.HP_QNA_DRAWUP_DATE
+  		  			 , B.HP_QNA_WATCHED
+  		  			 , B.MEM_NAME
+  		  			 , B.HP_QNA_MEM_NO
+  		  			 , B.HP_QNA_STATUS
+  		  			 , B.HP_QNA_ANSWER
+  		  			 , B.HP_QNA_CMT_COUNT
+		  		  FROM (SELECT C.HP_QNA_NO
+		  		  			 , C.HP_QNA_CATEGORY_NO
+		  		  			 , C.HP_QNA_TITLE
+		  		  			 , C.HP_QNA_CONTENT
+		  		  			 , C.HP_QNA_DRAWUP_DATE
+		  		  			 , C.HP_QNA_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_QNA_MEM_NO
+		  		  			 , C.HP_QNA_STATUS
+		  		  			 , C.HP_QNA_ANSWER
+		  		  			 , C.HP_QNA_CMT_COUNT
+		  		  		  FROM HOSPITAL_QNA C
+		  		  		  JOIN MEM_INFO D ON(C.HP_QNA_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_QNA_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_QNA_NO DESC
+		  		       ) B
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="increamentCount">
+	    UPDATE
+	 	       HOSPITAL_QNA A
+	 	   SET A.HP_QNA_WATCHED = (SELECT
+	 		   		            	     B.HP_QNA_WATCHED + 1
+	 		   				        FROM HOSPITAL_QNA B
+	 		   		 			   WHERE B.HP_QNA_NO = ?
+	 		   					 )
+	 	 WHERE A.HP_QNA_NO = ?
+	</entry>
+	<entry key="selectOneBoard">
+	    SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , B.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM HOSPITAL_QNA A
+		  JOIN MEM_INFO B ON(A.HP_QNA_MEM_NO = B.MEM_NO)
+		 WHERE A.HP_QNA_NO = ?
+	</entry>
+	<entry key="searchWriterBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_QNA A
+	      JOIN MEM_INFO B ON (A.HP_QNA_MEM_NO = B.MEM_NO)
+	     WHERE A.HP_QNA_STATUS = 'PUBLIC'
+	       AND B.MEM_NAME LIKE '%' || ? || '%'
+	       </entry>
+	  
+	<entry key="searchTitleBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_QNA A
+	     WHERE A.HP_QNA_STATUS = 'PUBLIC'
+	       AND A.HP_QNA_TITLE LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchBodyBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_QNA A
+	     WHERE A.HP_QNA_STATUS = 'PUBLIC'
+	       AND A.HP_QNA_CONTENT LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchWriterBoard">	
+	    SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , A.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_QNA_NO
+  		  			 , B.HP_QNA_CATEGORY_NO
+  		  			 , B.HP_QNA_TITLE
+  		  			 , B.HP_QNA_CONTENT
+  		  			 , B.HP_QNA_DRAWUP_DATE
+  		  			 , B.HP_QNA_WATCHED
+  		  			 , B.MEM_NAME
+  		  			 , B.HP_QNA_MEM_NO
+  		  			 , B.HP_QNA_STATUS
+  		  			 , B.HP_QNA_ANSWER
+  		  			 , B.HP_QNA_CMT_COUNT
+		  		  FROM (SELECT C.HP_QNA_NO
+		  		  			 , C.HP_QNA_CATEGORY_NO
+		  		  			 , C.HP_QNA_TITLE
+		  		  			 , C.HP_QNA_CONTENT
+		  		  			 , C.HP_QNA_DRAWUP_DATE
+		  		  			 , C.HP_QNA_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_QNA_MEM_NO
+		  		  			 , C.HP_QNA_STATUS
+		  		  			 , C.HP_QNA_ANSWER
+		  		  			 , C.HP_QNA_CMT_COUNT
+		  		  		  FROM HOSPITAL_QNA C
+		  		  		  JOIN MEM_INFO D ON(C.HP_QNA_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_QNA_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_QNA_NO DESC
+		  		       ) B
+                 WHERE B.MEM_NAME LIKE '%' || ? || '%'
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="searchTitleBoard">	
+	    SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , A.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_QNA_NO
+  		  			 , B.HP_QNA_CATEGORY_NO
+  		  			 , B.HP_QNA_TITLE
+  		  			 , B.HP_QNA_CONTENT
+  		  			 , B.HP_QNA_DRAWUP_DATE
+  		  			 , B.HP_QNA_WATCHED
+  		  			 , B.MEM_NAME
+  		  			 , B.HP_QNA_MEM_NO
+  		  			 , B.HP_QNA_STATUS
+  		  			 , B.HP_QNA_ANSWER
+  		  			 , B.HP_QNA_CMT_COUNT
+		  		  FROM (SELECT C.HP_QNA_NO
+		  		  			 , C.HP_QNA_CATEGORY_NO
+		  		  			 , C.HP_QNA_TITLE
+		  		  			 , C.HP_QNA_CONTENT
+		  		  			 , C.HP_QNA_DRAWUP_DATE
+		  		  			 , C.HP_QNA_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_QNA_MEM_NO
+		  		  			 , C.HP_QNA_STATUS
+		  		  			 , C.HP_QNA_ANSWER
+		  		  			 , C.HP_QNA_CMT_COUNT
+		  		  		  FROM HOSPITAL_QNA C
+		  		  		  JOIN MEM_INFO D ON(C.HP_QNA_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_QNA_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_QNA_NO DESC
+		  		       ) B
+                 WHERE B.HP_QNA_TITLE LIKE '%' || ? || '%'
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?	
+	</entry>
+	<entry key="searchBodyBoard">	
+	     SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , A.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_QNA_NO
+  		  			 , B.HP_QNA_CATEGORY_NO
+  		  			 , B.HP_QNA_TITLE
+  		  			 , B.HP_QNA_CONTENT
+  		  			 , B.HP_QNA_DRAWUP_DATE
+  		  			 , B.HP_QNA_WATCHED
+  		  			 , B.MEM_NAME
+  		  			 , B.HP_QNA_MEM_NO
+  		  			 , B.HP_QNA_STATUS
+  		  			 , B.HP_QNA_ANSWER
+  		  			 , B.HP_QNA_CMT_COUNT
+		  		  FROM (SELECT C.HP_QNA_NO
+		  		  			 , C.HP_QNA_CATEGORY_NO
+		  		  			 , C.HP_QNA_TITLE
+		  		  			 , C.HP_QNA_CONTENT
+		  		  			 , C.HP_QNA_DRAWUP_DATE
+		  		  			 , C.HP_QNA_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_QNA_MEM_NO
+		  		  			 , C.HP_QNA_STATUS
+		  		  			 , C.HP_QNA_ANSWER
+		  		  			 , C.HP_QNA_CMT_COUNT
+		  		  		  FROM HOSPITAL_QNA C
+		  		  		  JOIN MEM_INFO D ON(C.HP_QNA_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_QNA_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_QNA_NO DESC
+		  		       ) B
+                 WHERE B.HP_QNA_CONTENT LIKE '%' || ? || '%'
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+    </entry>
+    <entry key="insertBoard">
+		INSERT
+		  INTO HOSPITAL_QNA
+		(
+		  HP_QNA_NO
+		, HP_QNA_CATEGORY_NO
+		, HP_QNA_TITLE
+		, HP_QNA_CONTENT
+		, HP_QNA_MEM_NO
+		)
+		VALUES
+		(
+		  SEQ_HP_QNA_NO.NEXTVAL
+		, ?
+		, ?
+		, ?
+		, ?
+		)
+	</entry>
+	<entry key="deleteBoard">
+		UPDATE
+		       HOSPITAL_QNA A
+		   SET A.HP_QNA_STATUS = 'DELETE'
+		 WHERE A.HP_QNA_STATUS IN ('PUBLIC','PRIVATE')
+		   AND A.HP_QNA_NO = ?
+	</entry>
+	<entry key="updateBoard">
+		UPDATE		/* creation.board.model.dao.HPFAQBoardDAO#updateBoard() */
+		       HOSPITAL_QNA A
+		   SET A.HP_QNA_TITLE = ?
+		     , A.HP_QNA_CONTENT = ?
+		     , A.HP_QNA_CATEGORY_NO = ?
+		 WHERE HP_QNA_STATUS IN ('PUBLIC', 'PRIVATE')
+		   AND HP_QNA_NO = ?
+	</entry>
+</properties>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectTotalCount">
+			SELECT
+				   COUNT(*)
+			  FROM HOSPITAL_BD A
+			 WHERE A.HP_BD_CATEGORY_NO = 'HP_INFO'
+			   AND A.HP_BD_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="selectList">
+	    SELECT
+		       A.HP_BD_NO
+		     , A.HP_BD_CATEGORY_NO
+		     , A.HP_BD_TITLE
+		     , A.HP_BD_CONTENT
+		     , A.HP_BD_DRAWUP_DATE
+		     , A.HP_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HP_MEM_NO
+		     , A.HP_BD_STATUS
+  			 , A.HP_BD_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_BD_NO
+		  			 , B.HP_BD_CATEGORY_NO
+		  			 , B.HP_BD_TITLE
+		  			 , B.HP_BD_CONTENT
+		  			 , B.HP_BD_DRAWUP_DATE
+		  			 , B.HP_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HP_MEM_NO
+		  			 , B.HP_BD_STATUS
+  		  			 , B.HP_BD_CMT_COUNT
+		  		  FROM (SELECT C.HP_BD_NO
+		  		  			 , C.HP_BD_CATEGORY_NO
+		  		  			 , C.HP_BD_TITLE
+		  		  			 , C.HP_BD_CONTENT
+		  		  			 , C.HP_BD_DRAWUP_DATE
+		  		  			 , C.HP_BD_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_MEM_NO
+		  		  			 , C.HP_BD_STATUS
+		  		  			 , C.HP_BD_CMT_COUNT
+		  		  		  FROM HOSPITAL_BD C
+		  		  		  JOIN MEM_INFO D ON(C.HP_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_BD_CATEGORY_NO = 'HP_INFO'
+		  		  		   AND C.HP_BD_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_BD_NO DESC
+		  		       ) B
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="increamentCount">
+	    UPDATE
+	 	       HOSPITAL_BD A
+	 	   SET A.HP_BD_WATCHED = (SELECT
+	 		   		            	     B.HP_BD_WATCHED + 1
+	 		   				        FROM HOSPITAL_BD B
+	 		   		 			   WHERE B.HP_BD_NO = ?
+	 		   					 )
+	 	 WHERE A.HP_BD_NO = ?
+	</entry>
+	<entry key="selectOneBoard">
+	    SELECT
+		       A.HP_BD_NO
+		     , A.HP_BD_CATEGORY_NO
+		     , A.HP_BD_TITLE
+		     , A.HP_BD_CONTENT
+		     , A.HP_BD_DRAWUP_DATE
+		     , A.HP_BD_WATCHED
+		     , B.MEM_NAME
+		     , A.HP_MEM_NO
+		     , A.HP_BD_CMT_COUNT
+		  FROM HOSPITAL_BD A
+		  JOIN MEM_INFO B ON(A.HP_MEM_NO = B.MEM_NO)
+		 WHERE A.HP_BD_NO = ?
+	</entry>
+	<entry key="searchWriterBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_BD A
+	      JOIN MEM_INFO B ON (A.HP_MEM_NO = B.MEM_NO)
+	     WHERE A.HP_BD_STATUS = 'PUBLIC'
+	       AND A.HP_BD_CATEGORY_NO = 'HP_INFO'
+	       AND B.MEM_NAME LIKE '%' || ? || '%'
+	       </entry>
+	  
+	<entry key="searchTitleBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_BD A
+	     WHERE A.HP_BD_STATUS = 'PUBLIC'
+	       AND A.HP_BD_CATEGORY_NO = 'HP_INFO'
+	       AND A.HP_BD_TITLE LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchBodyBoardCount">
+	    SELECT 
+	           COUNT(*)
+	      FROM HOSPITAL_BD A
+	     WHERE A.HP_BD_STATUS = 'PUBLIC'
+	       AND A.HP_BD_CATEGORY_NO = 'HP_INFO'
+	       AND A.HP_BD_CONTENT LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchWriterBoard">	
+	    SELECT 
+               A.RNUM
+             , A.HP_BD_NO
+             , A.HP_BD_CATEGORY_NO
+             , A.HP_BD_CATEGORY_NAME
+             , A.HP_BD_TITLE
+             , A.HP_BD_CONTENT
+             , A.HP_MEM_NO
+             , A.MEM_NAME
+             , A.HP_BD_WATCHED
+             , A.HP_BD_DRAWUP_DATE
+             , A.HP_BD_STATUS
+          FROM (SELECT ROWNUM RNUM
+                     , B.HP_BD_NO
+                     , B.HP_BD_CATEGORY_NO
+                     , B.HP_BD_CATEGORY_NAME
+                     , B.HP_BD_TITLE
+                     , B.HP_BD_CONTENT
+                     , B.HP_MEM_NO
+                     , B.MEM_NAME
+                     , B.HP_BD_WATCHED
+                     , B.HP_BD_DRAWUP_DATE
+                     , B.HP_BD_STATUS
+                  FROM (SELECT C.HP_BD_NO
+                             , C.HP_BD_CATEGORY_NO
+                             , D.HP_BD_CATEGORY_NAME
+                             , C.HP_BD_TITLE
+                             , C.HP_BD_CONTENT
+                             , C.HP_MEM_NO
+                             , E.MEM_NAME
+                             , C.HP_BD_WATCHED
+                             , C.HP_BD_DRAWUP_DATE
+                             , C.HP_BD_STATUS
+                          FROM HOSPITAL_BD C
+                          JOIN HOSPITAL_BD_CATEGORY D ON (C.HP_BD_CATEGORY_NO = D.HP_BD_CATEGORY_NO)
+                          JOIN MEM_INFO E ON(C.HP_MEM_NO = E.MEM_NO)
+                         WHERE C.HP_BD_STATUS = 'PUBLIC'
+                           AND C.HP_BD_CATEGORY_NO = 'HP_INFO'
+                         ORDER BY C.HP_BD_NO DESC
+                        ) B
+                  WHERE B.MEM_NAME LIKE '%' || ? || '%'
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="searchTitleBoard">	
+	
+	 SELECT 
+               A.RNUM
+             , A.HP_BD_NO
+             , A.HP_BD_CATEGORY_NO
+             , A.HP_BD_CATEGORY_NAME
+             , A.HP_BD_TITLE
+             , A.HP_BD_CONTENT
+             , A.HP_MEM_NO
+             , A.MEM_NAME
+             , A.HP_BD_WATCHED
+             , A.HP_BD_DRAWUP_DATE
+             , A.HP_BD_STATUS
+          FROM (SELECT ROWNUM RNUM
+                     , B.HP_BD_NO
+                     , B.HP_BD_CATEGORY_NO
+                     , B.HP_BD_CATEGORY_NAME
+                     , B.HP_BD_TITLE
+                     , B.HP_BD_CONTENT
+                     , B.HP_MEM_NO
+                     , B.MEM_NAME
+                     , B.HP_BD_WATCHED
+                     , B.HP_BD_DRAWUP_DATE
+                     , B.HP_BD_STATUS
+                  FROM (SELECT C.HP_BD_NO
+                             , C.HP_BD_CATEGORY_NO
+                             , D.HP_BD_CATEGORY_NAME
+                             , C.HP_BD_TITLE
+                             , C.HP_BD_CONTENT
+                             , C.HP_MEM_NO
+                             , E.MEM_NAME
+                             , C.HP_BD_WATCHED
+                             , C.HP_BD_DRAWUP_DATE
+                             , C.HP_BD_STATUS
+                          FROM HOSPITAL_BD C
+                          JOIN HOSPITAL_BD_CATEGORY D ON (C.HP_BD_CATEGORY_NO = D.HP_BD_CATEGORY_NO)
+                          JOIN MEM_INFO E ON(C.HP_MEM_NO = E.MEM_NO)
+                         WHERE C.HP_BD_STATUS = 'PUBLIC'
+                           AND C.HP_BD_CATEGORY_NO = 'HP_INFO'
+                         ORDER BY C.HP_BD_NO DESC
+                        ) B
+                  WHERE B.HP_BD_TITLE LIKE '%' || ? || '%'
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+	   
+	</entry>
+	<entry key="searchBodyBoard">	
+	     SELECT 
+               A.RNUM
+             , A.HP_BD_NO
+             , A.HP_BD_CATEGORY_NO
+             , A.HP_BD_CATEGORY_NAME
+             , A.HP_BD_TITLE
+             , A.HP_BD_CONTENT
+             , A.HP_MEM_NO
+             , A.MEM_NAME
+             , A.HP_BD_WATCHED
+             , A.HP_BD_DRAWUP_DATE
+             , A.HP_BD_STATUS
+          FROM (SELECT ROWNUM RNUM
+                     , B.HP_BD_NO
+                     , B.HP_BD_CATEGORY_NO
+                     , B.HP_BD_CATEGORY_NAME
+                     , B.HP_BD_TITLE
+                     , B.HP_BD_CONTENT
+                     , B.HP_MEM_NO
+                     , B.MEM_NAME
+                     , B.HP_BD_WATCHED
+                     , B.HP_BD_DRAWUP_DATE
+                     , B.HP_BD_STATUS
+                  FROM (SELECT C.HP_BD_NO
+                             , C.HP_BD_CATEGORY_NO
+                             , D.HP_BD_CATEGORY_NAME
+                             , C.HP_BD_TITLE
+                             , C.HP_BD_CONTENT
+                             , C.HP_MEM_NO
+                             , E.MEM_NAME
+                             , C.HP_BD_WATCHED
+                             , C.HP_BD_DRAWUP_DATE
+                             , C.HP_BD_STATUS
+                          FROM HOSPITAL_BD C
+                          JOIN HOSPITAL_BD_CATEGORY D ON (C.HP_BD_CATEGORY_NO = D.HP_BD_CATEGORY_NO)
+                          JOIN MEM_INFO E ON(C.HP_MEM_NO = E.MEM_NO)
+                         WHERE C.HP_BD_STATUS = 'PUBLIC'
+                           AND C.HP_BD_CATEGORY_NO = 'HP_INFO'
+                         ORDER BY C.HP_BD_NO DESC
+                        ) B
+                  WHERE B.HP_BD_CONTENT LIKE '%' || ? || '%'
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+    </entry>   
+</properties>

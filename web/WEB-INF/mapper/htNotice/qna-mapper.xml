@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<entry key="selectTotalCount">
+	    SELECT 	/* 페이징 처리를 위한 전체 게시물 수 조회용 메소드 */ /* creation.notice.model.dao.HTNoticeDAO#selectTotalCount() */
+	           COUNT(*)
+	      FROM HOTEL_BD A
+	     WHERE A.HT_BD_STATUS = 'PUBLIC'
+	</entry>
+
+	<entry key="selectnoticeList">
+		SELECT 		/* creation.notice.model.dao.HTNoticeDAO#selectTotalCount() */ /* 게시물 전체 조회용 메소드 */
+			   A.RNUM
+		     , A.HT_BD_NO
+             , A.HT_BD_CATEGORY_NO     
+		     , A.HT_BD_TITLE
+		     , A.HT_BD_CONTENT
+		     , A.HT_BD_DRAWUP_DATE
+		     , A.HT_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HT_MEM_NO
+             , A.HT_BD_ANSWER
+		     , A.HT_BD_STATUS
+             , A.HT_BD_CMT_COUNT  
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HT_BD_NO
+		  			 , B.HT_BD_CATEGORY_NO
+		  			 , B.HT_BD_TITLE
+		  			 , B.HT_BD_CONTENT
+		  			 , B.HT_BD_DRAWUP_DATE
+                     , B.HT_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HT_MEM_NO
+                     , B.HT_BD_ANSWER
+		  			 , B.HT_BD_STATUS
+                     , B.HT_BD_CMT_COUNT
+		  		  FROM (SELECT C.HT_BD_NO
+		  		  			 , C.HT_BD_CATEGORY_NO
+		  		  			 , C.HT_BD_TITLE
+		  		  			 , C.HT_BD_CONTENT
+		  		  			 , C.HT_BD_DRAWUP_DATE
+                             , C.HT_BD_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HT_MEM_NO
+                             , C.HT_BD_ANSWER
+		  		  			 , C.HT_BD_STATUS
+                             , C.HT_BD_CMT_COUNT
+		  		  		  FROM HOTEL_BD C
+		  		  		  JOIN MEM_INFO D ON(C.HT_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HT_BD_STATUS = 'PUBLIC'
+		  		  		   AND C.HT_BD_CATEGORY_NO = 'HT_QNA'
+		  		  		 
+		  		       ) B
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+
+	<entry key="incrementNoticeCount">
+	    UPDATE 	/* creation.notice.model.dao.HTNoticeDAO#incrementNoticeCount() */ /* 조회수 증가 메소드 */
+	           HOTEL_BD A
+	       SET A.HT_BD_WATCHED = (SELECT B.HT_BD_WATCHED
+                                   FROM HOTEL_BD B
+                                  WHERE HT_BD_NO = ?
+                                ) + 1
+         WHERE A.HT_BD_NO = ?
+	</entry>
+	
+	<entry key="thInsertNotice">
+	  INSERT
+		  INTO HOTEL_BD
+		(
+		  HT_BD_NO
+		, HT_BD_TITLE
+		, HT_BD_CONTENT
+		, HT_BD_DRAWUP_DATE
+		, HT_BD_WATCHED
+		, HT_MEM_NO
+		, HT_BD_CATEGORY_NO
+		, HT_BD_STATUS
+		)
+		VALUES
+		(
+		  SEQ_HT_BD_NO.NEXTVAL
+		, ?
+		, ?
+		, DEFAULT
+		, DEFAULT
+		, ?
+		, ?
+		, DEFAULT
+		)
+	</entry>
+	
+	<entry key="selectNoticeDetail"><!-- 수정해야함 -->
+	    SELECT 	 /* creation.notice.model.dao.HTNoticeDAO#selectNoticeDetail() */ /* 상세페이지 메소드 */
+	           A.HT_BD_NO
+             , A.HT_BD_CATEGORY_NO     
+		     , A.HT_BD_TITLE
+		     , A.HT_BD_CONTENT
+		     , A.HT_BD_DRAWUP_DATE
+		     , A.HT_BD_WATCHED
+		     , B.MEM_NAME
+		     , A.HT_MEM_NO
+		     , A.HT_BD_STATUS
+             , A.HT_BD_CMT_COUNT
+	      FROM HOTEL_BD A
+	      JOIN MEM_INFO B ON (A.HT_MEM_NO = B.MEM_NO)
+	     WHERE A.HT_BD_NO = ?
+	</entry>
+
+	<entry key="htUpdateNotice"> 
+	 UPDATE		/* creation.notice.model.dao.HTNoticeDAO#htUpdateNotice() */
+		       HOTEL_BD A
+		   SET A.HT_BD_TITLE = ?
+		     , A.HT_BD_CONTENT = ?
+		 WHERE HT_BD_STATUS = 'PUBLIC'
+		   AND HT_BD_NO = ?
+
+	</entry>
+	<entry key="htdeleteNotice"> 
+		UPDATE 	/* creation.notice.model.dao.HTNoticeDAO#deleteNotice() */
+		       HOTEL_BD A
+		   SET A.HT_BD_STATUS = 'PRIVATE'
+		 WHERE A.HT_BD_STATUS = 'PUBLIC'
+		   AND A.HT_BD_NO = ?
+	</entry>
+
+	<entry key="searchWriterNoticeCount">
+	    SELECT	/* 게시판 검색 결과 갯수 조회용 메소드 */	/* creation.notice.model.dao.HTNoticeDAO#searchWriterNoticeCount() */
+	           COUNT(*)
+	      FROM HOTEL_BD A
+	      JOIN MEM_INFO B ON (A.HT_MEM_NO = B.MEM_NO)
+	     WHERE A.HT_BD_STATUS = 'PUBLIC'
+	       AND A.HT_BD_CATEGORY_NO = 'HT_QNA'
+	       AND B.MEM_NAME LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchTitleNoticeCount">
+	     SELECT									/* creation.notice.model.dao.HTNoticeDAO#searchTitleNoticeCount() */
+	           COUNT(*)
+	      FROM HOTEL_BD A
+	     WHERE A.HT_BD_STATUS = 'PUBLIC'
+	       AND A.HT_BD_CATEGORY_NO = 'HT_QNA'
+	       AND A.HT_BD_TITLE LIKE '%' || ? || '%'
+	</entry>
+	<entry key="searchContentNoticeCount">
+	    SELECT									/* creation.notice.model.dao.HTNoticeDAO#searchContentNoticeCount() */
+	           COUNT(*)
+	      FROM HOTEL_BD A			
+	     WHERE A.HT_BD_STATUS = 'PUBLIC'
+	       AND A.HT_BD_CATEGORY_NO = 'HT_QNA'
+	       AND A.HT_BD_CONTENT LIKE '%' || ? || '%'
+	</entry>
+	
+	<entry key="searchWriterNotice">	
+	    SELECT		/* 게시판 검색 결과 조회용 메소드 */	/* creation.notice.model.dao.HTNoticeDAO#searchWriterNotice() */
+               A.RNUM
+		     , A.HT_BD_NO
+             , A.HT_BD_CATEGORY_NO     
+		     , A.HT_BD_TITLE
+		     , A.HT_BD_CONTENT
+		     , A.HT_BD_DRAWUP_DATE
+		     , A.HT_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HT_MEM_NO
+             , A.HT_BD_ANSWER
+		     , A.HT_BD_STATUS
+             , A.HT_BD_CMT_COUNT  
+		  FROM (SELECT ROWNUM RNUM
+                     , B.HT_BD_NO
+		  			 , B.HT_BD_CATEGORY_NO
+		  			 , B.HT_BD_TITLE
+		  			 , B.HT_BD_CONTENT
+		  			 , B.HT_BD_DRAWUP_DATE
+                     , B.HT_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HT_MEM_NO
+                     , B.HT_BD_ANSWER
+		  			 , B.HT_BD_STATUS
+                     , B.HT_BD_CMT_COUNT
+		  		  FROM (SELECT C.HT_BD_NO
+                             , C.HT_BD_CATEGORY_NO     
+                             , C.HT_BD_TITLE
+                             , C.HT_BD_CONTENT
+                             , C.HT_BD_DRAWUP_DATE
+                             , C.HT_BD_WATCHED
+                             , E.MEM_NAME
+                             , C.HT_MEM_NO
+                             , C.HT_BD_ANSWER
+                             , C.HT_BD_STATUS
+                             , C.HT_BD_CMT_COUNT  
+                          FROM HOTEL_BD C
+                          JOIN MEM_INFO E ON(C.HT_MEM_NO = E.MEM_NO)
+                         WHERE C.HT_BD_STATUS = 'PUBLIC'
+                         ORDER BY C.HT_BD_NO DESC
+                        ) B
+                  WHERE B.MEM_NAME LIKE '%' || ? || '%'  
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key="searchTitleNotice">	
+	   SELECT		/* 게시판 검색 결과 조회용 메소드 */	/* creation.notice.model.dao.HTNoticeDAO#searchWriterNotice() */
+               A.RNUM
+		     , A.HT_BD_NO
+             , A.HT_BD_CATEGORY_NO     
+		     , A.HT_BD_TITLE
+		     , A.HT_BD_CONTENT
+		     , A.HT_BD_DRAWUP_DATE
+		     , A.HT_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HT_MEM_NO
+             , A.HT_BD_ANSWER
+		     , A.HT_BD_STATUS
+             , A.HT_BD_CMT_COUNT  
+		  FROM (SELECT ROWNUM RNUM
+                     , B.HT_BD_NO
+		  			 , B.HT_BD_CATEGORY_NO
+		  			 , B.HT_BD_TITLE
+		  			 , B.HT_BD_CONTENT
+		  			 , B.HT_BD_DRAWUP_DATE
+                     , B.HT_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HT_MEM_NO
+                     , B.HT_BD_ANSWER
+		  			 , B.HT_BD_STATUS
+                     , B.HT_BD_CMT_COUNT
+		  		  FROM (SELECT C.HT_BD_NO
+                             , C.HT_BD_CATEGORY_NO     
+                             , C.HT_BD_TITLE
+                             , C.HT_BD_CONTENT
+                             , C.HT_BD_DRAWUP_DATE
+                             , C.HT_BD_WATCHED
+                             , E.MEM_NAME
+                             , C.HT_MEM_NO
+                             , C.HT_BD_ANSWER
+                             , C.HT_BD_STATUS
+                             , C.HT_BD_CMT_COUNT  
+                          FROM HOTEL_BD C
+                          JOIN MEM_INFO E ON(C.HT_MEM_NO = E.MEM_NO)
+                         WHERE C.HT_BD_STATUS = 'PUBLIC'
+                         ORDER BY C.HT_BD_NO DESC
+                        ) B
+                  WHERE B.HT_BD_TITLE LIKE '%' || ? || '%'  
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key="searchContentNotice">	
+	   SELECT		/* 게시판 검색 결과 조회용 메소드 */	/* creation.notice.model.dao.HTNoticeDAO#searchWriterNotice() */
+               A.RNUM
+		     , A.HT_BD_NO
+             , A.HT_BD_CATEGORY_NO     
+		     , A.HT_BD_TITLE
+		     , A.HT_BD_CONTENT
+		     , A.HT_BD_DRAWUP_DATE
+		     , A.HT_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HT_MEM_NO
+             , A.HT_BD_ANSWER
+		     , A.HT_BD_STATUS
+             , A.HT_BD_CMT_COUNT  
+		  FROM (SELECT ROWNUM RNUM
+                     , B.HT_BD_NO
+		  			 , B.HT_BD_CATEGORY_NO
+		  			 , B.HT_BD_TITLE
+		  			 , B.HT_BD_CONTENT
+		  			 , B.HT_BD_DRAWUP_DATE
+                     , B.HT_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HT_MEM_NO
+                     , B.HT_BD_ANSWER
+		  			 , B.HT_BD_STATUS
+                     , B.HT_BD_CMT_COUNT
+		  		  FROM (SELECT C.HT_BD_NO
+                             , C.HT_BD_CATEGORY_NO     
+                             , C.HT_BD_TITLE
+                             , C.HT_BD_CONTENT
+                             , C.HT_BD_DRAWUP_DATE
+                             , C.HT_BD_WATCHED
+                             , E.MEM_NAME
+                             , C.HT_MEM_NO
+                             , C.HT_BD_ANSWER
+                             , C.HT_BD_STATUS
+                             , C.HT_BD_CMT_COUNT  
+                          FROM HOTEL_BD C
+                          JOIN MEM_INFO E ON(C.HT_MEM_NO = E.MEM_NO)
+                         WHERE C.HT_BD_STATUS = 'PUBLIC'
+                         ORDER BY C.HT_BD_NO DESC
+                        ) B
+                  WHERE B.HT_BD_CONTENT LIKE '%' || ? || '%'  
+               ) A
+         WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key="insertThumbnail">
+	    INSERT
+	      INTO FILE_INFO A
+	   	(
+	   	  A.FILE_NO
+	   	, A.BD_NO
+	   	, A.BD_CATEGORY_NO
+	   	, A.ORIGIN_FILE_NAME
+	   	, A.FILE_PATH
+	   	, A.SAVE_FILE_NAME
+	   	, A.FILE_EXTENSION
+	   	)
+	   	VALUES
+	   	(
+	   		1
+	   	, ?
+	   	, ?
+	   	, ?
+	   	, ?
+	   	, ?
+	   	, ?
+	   	)
+	</entry>
+	
+	
+</properties>
+
+
+

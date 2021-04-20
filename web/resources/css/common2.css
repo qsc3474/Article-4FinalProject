@@ -1,0 +1,169 @@
+/* By. 210406 최혁진 */
+
+body, html {
+    font-family: 'Noto Sans KR', sans-serif !important;
+    color: #0f0f0f !important;
+}
+ul, li {
+    list-style: none;
+}
+.title-sec {
+    margin: 100px 0 0 0;
+}
+.section-title {
+    margin-bottom: 0;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+.notice-sec .container {
+    padding: 100px 0;
+}
+.table {
+    text-align: center;
+}
+.table th {
+    text-align: center !important;
+}
+.app-title {
+    margin: 0 0 10px !important;
+    padding-bottom: 0 !important;
+    font-size: 14px;
+    font-weight: 400;
+    border-bottom: none !important;
+}
+.panel-wrap .table th {
+    padding: 12px !important;
+    border-top: 2px solid #0f0f0f !important;
+    background-color: #fafafa;
+}
+.panel-wrap .table td {
+    padding: 12px !important;
+}
+.panel-wrap .table td .detail {
+    color: inherit !important;
+}
+.paging-wrap {
+    margin-top: 20px;
+}
+.paging-wrap .pagination > li > a , span {
+    font-size: 13px;
+    color: #0f0f0f;
+}
+.page-submenu {
+    margin-top: 26px;
+    border-top: 2px solid #0f0f0f;
+}
+.page-submenu ul {
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 3px;
+}
+.page-submenu ul li  + li {
+    border-top: 1px solid #ddd;
+}
+.page-submenu ul li a {
+    display: block;
+    position: relative;
+    height: 45px;
+    padding: 12px 18px;
+}
+.page-submenu ul li a span {
+    display: inline-block;
+    color: #888;
+}
+.page-submenu ul li a i.fa-chevron-right {
+    position: absolute;
+    top: 17px;
+    right: 14px;
+    font-size: 12px;
+    color: #0f0f0f;
+    opacity: .5;
+}
+.page-submenu ul li a.active {
+    background-color: #eaeaea;
+}
+.page-submenu ul li a.active span {
+    font-weight: 600;
+    color: #0f0f0f;
+}
+.page-submenu ul li a.active i.fa-chevron-right {
+    opacity: 1;
+}
+.page-submenu ul li a:hover {
+    font-weight: 600;
+    color: #0f0f0f;
+    background-color: #eaeaea;
+}
+.page-submenu ul li a:hover span {
+    color: #0f0f0f;
+}
+.page-submenu ul li a:hover i.fa-chevron-right {
+    opacity: 1;
+}
+.input-text, select {
+	width: 15% !important;
+}
+.faq-list-box {
+	width: 100%;
+	padding: 0; 
+	margin-bottom: 70px;
+	border-top: 2px solid #0f0f0f;
+}
+.faq-list-box li{
+	border-top: 1px solid #4ebfbd; 
+}
+.faq-list-box li:first-child{
+	border:0 none;
+}
+.faq-list-box li a {
+	position: relative;
+    padding: 16px 26px;
+    background-color: #36b2b0;
+	display:block; 
+	text-decoration:none; 
+}
+.faq-list-box li a span {
+	font-size: 15px;
+	color: #fff;
+}
+.faq-list-box li a .fa-chevron-down {
+	position: absolute;
+    top: 20px;
+    right: 18px;
+    color: #fff;
+}
+.faq-list-box li p {
+	padding: 26px;
+	color:#0f0f0f;
+	font-size: 15px;
+    margin-bottom: 0;
+    background: #d0f5f4;
+}
+.form-user-input {
+    margin-top: 20px;
+}
+.form-user-input ul {
+	padding-left: 0;
+}
+.form-user-input ul li select {
+	width: 100% !important;
+}
+.form-user-input ul li label.fieldlabels {
+	width: 100%;
+}
+.reserv-listbox {
+	margin: 20px 0 50px 0 !important;
+	border-top: 2px solid #0f0f0f !important;
+	border-bottom: 1px solid #0f0f0f !important;
+}
+.reserv-listbox th {
+	width: 210px;
+    background-color: #eee;
+    padding: 15px 0 !important;
+}
+.reserv-listbox td {
+	padding: 15px 0 !important;
+}

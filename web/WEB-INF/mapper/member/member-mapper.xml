@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="registMember">
+		INSERT
+		  INTO MEM_INFO A
+		(
+		  A.MEM_NO
+		, A.MEM_NAME
+		, A.MEM_PHONE
+		, A.MEM_ADDRESS
+		, A.MEM_EMAIL
+		, A.MEM_ID
+		, A.MEM_PWD
+		, A.MEM_BIRTH
+		)
+		VALUES
+		(
+		  SEQ_MEM_NO.NEXTVAL
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+		, ?
+		)
+	</entry>
+	<entry key="selectEncryptedPwd">
+		SELECT 
+	           A.MEM_PWD
+	      FROM MEM_INFO A
+	     WHERE A.MEM_STATUS = 'Y'
+	       AND A.MEM_ID = ?
+	</entry>
+	<entry key="selectLoginMember">
+	      SELECT 
+		       A.MEM_NO
+		     , A.MEM_NAME
+		     , A.MEM_PHONE
+		     , A.MEM_ADDRESS
+		     , A.MEM_EMAIL
+		     , A.MEM_ID
+		     , A.MEM_PWD
+		     , A.MEM_BIRTH
+		     , A.MEM_KIND
+		     , A.MEM_STATUS
+		     , A.MEM_ENROLL_DATE
+		  FROM MEM_INFO A
+		 WHERE A.MEM_STATUS = 'Y'
+		   AND A.MEM_ID = ?
+	</entry>
+	<entry key="updateMember">
+	    UPDATE
+	           MEM_INFO A
+	       SET A.MEM_PHONE = ?
+	         , A.MEM_ADDRESS = ?
+	         , A.MEM_EMAIL = ?
+	     WHERE A.MEM_NO = ?
+	       AND A.MEM_STATUS = 'Y'
+	</entry>
+	<entry key="deleteMember">
+	    UPDATE
+	           MEM_INFO A
+	       SET A.MEM_STATUS = 'N'
+	     WHERE A.MEM_NO = ?
+	       AND A.MEM_STATUS = 'Y'
+	</entry>
+</properties>

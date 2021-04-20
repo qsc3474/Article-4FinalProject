@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectTotalCount">
+		SELECT
+			   COUNT(*)
+		  FROM HOSPITAL_BD A
+		 WHERE A.HP_BD_CATEGORY_NO = 'HP_FAQ'
+	</entry>
+	<entry key="selectList">
+		SELECT
+		       A.HP_BD_NO
+		     , A.HP_BD_CATEGORY_NO     
+		     , A.HP_BD_TITLE
+		     , A.HP_BD_CONTENT
+		     , A.HP_BD_DRAWUP_DATE
+		     , A.HP_BD_WATCHED
+		     , A.MEM_NAME
+		     , A.HP_MEM_NO
+		     , A.HP_BD_CMT_COUNT
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.HP_BD_NO
+		  			 , B.HP_BD_CATEGORY_NO
+		  			 , B.HP_BD_TITLE
+		  			 , B.HP_BD_CONTENT
+		  			 , B.HP_BD_DRAWUP_DATE
+		  			 , B.HP_BD_WATCHED
+		  			 , B.MEM_NAME
+		  			 , B.HP_MEM_NO
+		  			 , B.HP_BD_CMT_COUNT
+		  		  FROM (SELECT C.HP_BD_NO
+		  		  			 , C.HP_BD_CATEGORY_NO
+		  		  			 , C.HP_BD_TITLE
+		  		  			 , C.HP_BD_CONTENT
+		  		  			 , C.HP_BD_DRAWUP_DATE
+		  		  			 , C.HP_BD_WATCHED
+		  		  			 , D.MEM_NAME
+		  		  			 , C.HP_MEM_NO
+		  		  			 , C.HP_BD_CMT_COUNT
+		  		  		  FROM HOSPITAL_BD C
+		  		  		  JOIN MEM_INFO D ON(C.HP_MEM_NO = D.MEM_NO)
+		  		  		 WHERE C.HP_BD_CATEGORY_NO = 'HP_FAQ'
+		  		  		   AND C.HP_BD_STATUS = 'PUBLIC'
+		  		  		 ORDER BY C.HP_BD_NO DESC
+		  		       ) B
+		       ) A
+		 WHERE A.RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="increamentCount">
+	    UPDATE
+	 	       HOSPITAL_BD A
+	 	   SET A.HP_BD_WATCHED = (SELECT
+	 		   		            	     B.HP_BD_WATCHED + 1
+	 		   				        FROM HOSPITAL_BD B
+	 		   		 			   WHERE B.HP_BD_NO = ?
+	 		   					 )
+	 	 WHERE A.HP_BD_NO = ?
+	 	   AND A.HP_BD_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="selectOneBoard">
+		SELECT
+		       A.HP_BD_NO
+		     , A.HP_BD_CATEGORY_NO     
+		     , A.HP_BD_TITLE
+		     , A.HP_BD_CONTENT
+		     , A.HP_BD_DRAWUP_DATE
+		     , A.HP_BD_WATCHED
+		     , B.MEM_NAME
+		     , A.HP_MEM_NO
+		     , A.HP_BD_CMT_COUNT
+		  FROM HOSPITAL_BD A
+		  JOIN MEM_INFO B ON(A.HP_MEM_NO = B.MEM_NO)
+		 WHERE A.HP_BD_NO = ?
+		   AND A.HP_BD_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="insertBoard">
+		INSERT
+		  INTO HOSPITAL_BD
+		(
+		  HP_BD_NO
+		, HP_BD_CATEGORY_NO
+		, HP_BD_TITLE
+		, HP_BD_CONTENT
+		, HP_MEM_NO
+		)
+		VALUES
+		(
+		  SEQ_HP_BD_NO.NEXTVAL
+		, ?
+		, ?
+		, ?
+		, ?
+		)
+	</entry>
+	<entry key="reviewInsertBoard">
+	    INSERT
+		  INTO HOSPITAL_RV
+		(
+		  HP_RV_NO
+		, HP_RV_CATEGORY_NO
+		, HP_RV_TITLE
+		, HP_RV_CONTENT
+		, HP_RV_MEM_NO
+		)
+		VALUES
+		(
+		  SEQ_HP_RV_NO.NEXTVAL
+		, ?
+		, ?
+		, ?
+		, ?
+		)
+	</entry>
+	<entry key="QNAInsertBoard">
+	    INSERT
+		  INTO HOSPITAL_QNA
+		(
+		  HP_QNA_NO
+		, HP_QNA_CATEGORY_NO
+		, HP_QNA_TITLE
+		, HP_QNA_CONTENT
+		, HP_QNA_MEM_NO
+		)
+		VALUES
+		(
+		  SEQ_HP_QNA_NO.NEXTVAL
+		, ?
+		, ?
+		, ?
+		, ?
+		)
+	</entry>
+	<entry key="deleteBoard">
+		UPDATE
+		       HOSPITAL_BD A
+		   SET A.HP_BD_STATUS = 'DELETE'
+		 WHERE A.HP_BD_STATUS IN ('PUBLIC','PRIVATE')
+		   AND A.HP_BD_NO = ?
+	</entry>
+	<entry key="reviewDeleteBoard">
+	    UPDATE
+		       HOSPITAL_RV A
+		   SET A.HP_RV_STATUS = 'DELETE'
+		 WHERE A.HP_RV_STATUS IN ('PUBLIC','PRIVATE')
+		   AND A.HP_RV_NO = ?
+	</entry>
+	<entry key="QNADeleteBoard">
+	    UPDATE
+		       HOSPITAL_QNA A
+		   SET A.HP_QNA_STATUS = 'DELETE'
+		 WHERE A.HP_QNA_STATUS IN ('PUBLIC','PRIVATE')
+		   AND A.HP_QNA_NO = ?
+	</entry>
+	<entry key="updateBoard">
+		UPDATE
+		       HOSPITAL_BD A
+		   SET A.HP_BD_TITLE = ?
+		     , A.HP_BD_CONTENT = ?
+		     , A.HP_BD_CATEGORY_NO = ?
+		 WHERE A.HP_BD_STATUS IN ('PUBLIC', 'PRIVATE')
+		   AND A.HP_BD_NO = ?
+	</entry>
+	<entry key="increamentQNACount">
+	    UPDATE
+	 	       HOSPITAL_QNA A
+	 	   SET A.HP_QNA_WATCHED = (SELECT
+	 		   		            	     B.HP_QNA_WATCHED + 1
+	 		   				        FROM HOSPITAL_QNA B
+	 		   		 			   WHERE B.HP_QNA_NO = ?
+	 		   					 )
+	 	 WHERE A.HP_QNA_NO = ?
+	 	   AND A.HP_QNA_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="increamentRVCount">
+	    UPDATE
+	 	       HOSPITAL_RV A
+	 	   SET A.HP_RV_WATCHED = (SELECT
+	 		   		            	     B.HP_RV_WATCHED + 1
+	 		   				        FROM HOSPITAL_RV B
+	 		   		 			   WHERE B.HP_RV_NO = ?
+	 		   					 )
+	 	 WHERE A.HP_RV_NO = ?
+	 	   AND A.HP_RV_STATUS = 'PUBLIC'
+	</entry>
+	<entry key="selectQNAOneBoard">
+	    SELECT
+		       A.HP_QNA_NO
+  			 , A.HP_QNA_CATEGORY_NO
+  			 , A.HP_QNA_TITLE
+  			 , A.HP_QNA_CONTENT
+  			 , A.HP_QNA_DRAWUP_DATE
+  			 , A.HP_QNA_WATCHED
+  			 , B.MEM_NAME
+  			 , A.HP_QNA_MEM_NO
+  			 , A.HP_QNA_STATUS
+  			 , A.HP_QNA_ANSWER
+  			 , A.HP_QNA_CMT_COUNT
+		  FROM HOSPITAL_QNA A
+		  JOIN MEM_INFO B ON(A.HP_QNA_MEM_NO = B.MEM_NO)
+		 WHERE A.HP_QNA_NO = ?
+	</entry>
+	<entry key="selectRVOneBoard">
+	    SELECT
+		       A.HP_RV_NO
+  			 , A.HP_RV_CATEGORY_NO
+  			 , A.HP_RV_TITLE
+  			 , A.HP_RV_CONTENT
+  			 , A.HP_RV_DRAWUP_DATE
+  			 , A.HP_RV_WATCHED
+  			 , B.MEM_NAME
+  			 , A.HP_RV_MEM_NO
+  			 , A.HP_RV_STATUS
+  			 , A.HP_RV_CMT_COUNT
+  			 , C.FILE_PATH
+		  FROM HOSPITAL_RV A
+		  JOIN MEM_INFO B ON(A.HP_RV_MEM_NO = B.MEM_NO)
+		  LEFT JOIN FILE_INFO C ON(A.HP_RV_NO = C.BD_NO AND A.HP_RV_CATEGORY_NO = C.BD_CATEGORY_NO)
+		 WHERE A.HP_RV_NO = ?
+	</entry>
+	<entry key="updateRVBoard">
+	    UPDATE
+		       HOSPITAL_RV A
+		   SET A.HP_RV_TITLE = ?
+		     , A.HP_RV_CONTENT = ?
+		     , A.HP_RV_CATEGORY_NO = ?
+		 WHERE A.HP_RV_STATUS IN ('PUBLIC', 'PRIVATE')
+		   AND A.HP_RV_NO = ?
+	</entry>
+	<entry key="updateQNABoard">
+	    UPDATE
+		       HOSPITAL_QNA A
+		   SET A.HP_QNA_TITLE = ?
+		     , A.HP_QNA_CONTENT = ?
+		     , A.HP_QNA_CATEGORY_NO = ?
+		 WHERE A.HP_QNA_STATUS IN ('PUBLIC', 'PRIVATE')
+		   AND A.HP_QNA_NO = ?
+	</entry>
+</properties>
